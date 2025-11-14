@@ -1,28 +1,12 @@
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(200).send("Bot online.");
+export default function handler(req, res) {
+  if (req.method !== "POST") return res.status(200).send("Bot online.");
+
+  const message = req.body?.message?.content || "";
+  let reply = "Desculpe, não entendi.";
+
+  if (message.toLowerCase().includes("oi") || message.toLowerCase().includes("olá")) {
+    reply = "Olá! Qual seu nome?";
   }
 
-  const event = req.body;
-
-  const conversationId = event?.conversation?.id;
-  const message = event?.message?.content || "";
-
-  // Resposta simples do bot
-  const reply = `Você disse: ${message}`;
-
-  // Envia a resposta para o Chatwoot
-  await fetch(`https://app.chatwoot.com/api/v1/accounts/${process.env.CW_ACCOUNT_ID}/conversations/${conversationId}/messages`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "api_access_token": process.env.CW_API_TOKEN
-    },
-    body: JSON.stringify({
-      content: reply,
-      message_type: "outgoing"
-    })
-  });
-
-  res.status(200).json({ success: true });
+  res.status(200).json({ reply });
 }
