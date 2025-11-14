@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teste Chatwoot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    p {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Teste do Chatwoot</h1>
+  <p>Se você está vendo o widget no canto inferior direito, o Chatwoot está funcionando!</p>
+
+  <!-- WIDGET DO CHATWOOT -->
+  <script>
+    (function(d,t) {
+      var BASE_URL = "https://app.chatwoot.com"; /* Se usar self-host, troque essa URL */
+      var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      g.src = BASE_URL + "/packs/js/sdk.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+      g.onload = function() {
+        window.chatwootSDK.run({
+          websiteToken: "COLOQUE_SEU_TOKEN_AQUI",
+          baseUrl: BASE_URL
+        });
+      };
+    })(document, "script");
+  </script>
+</body>
+</html>
