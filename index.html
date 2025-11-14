@@ -42,7 +42,7 @@
     })(document, "script");
   </script>
 
-  <!-- INTEGRAÇÃO DIRETA COM O BOT DA VERCEL -->
+  <!-- BOT VIA VERCEL (apenas mostrar resposta no site) -->
   <script>
     const chatInputSelector = ".cw-chat-input"; 
     const chatSendSelector = ".cw-send-button"; 
@@ -63,8 +63,10 @@
         const message = input.value;
         if (!message) return;
         input.value = "";
+
         const reply = await sendToBot(message);
 
+        // Mostra resposta do bot no chat do site
         const chatContainer = document.querySelector(".cw-message-container");
         const botMessage = document.createElement("div");
         botMessage.className = "cw-message cw-message-outgoing";
