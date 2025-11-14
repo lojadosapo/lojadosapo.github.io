@@ -27,7 +27,7 @@
   <!-- WIDGET DO CHATWOOT -->
   <script>
     (function(d,t) {
-      var BASE_URL = "https://app.chatwoot.com"; /* Se usar self-host, troque essa URL */
+      var BASE_URL = "https://app.chatwoot.com";
       var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
       g.src = BASE_URL + "/packs/js/sdk.js";
       g.defer = true;
@@ -40,6 +40,39 @@
         });
       };
     })(document, "script");
+  </script>
+
+  <!-- INTEGRAÇÃO DIRETA COM O BOT DA VERCEL -->
+  <script>
+    const chatInputSelector = ".cw-chat-input"; 
+    const chatSendSelector = ".cw-send-button"; 
+
+    async function sendToBot(message) {
+      const res = await fetch("https://lojadosapo-github-io.vercel.app/api/bot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: { content: message } })
+      });
+      const data = await res.json();
+      return data.reply || data.content;
+    }
+
+    document.addEventListener("click", async (e) => {
+      if (e.target.matches(chatSendSelector)) {
+        const input = document.querySelector(chatInputSelector);
+        const message = input.value;
+        if (!message) return;
+        input.value = "";
+        const reply = await sendToBot(message);
+
+        const chatContainer = document.querySelector(".cw-message-container");
+        const botMessage = document.createElement("div");
+        botMessage.className = "cw-message cw-message-outgoing";
+        botMessage.innerText = reply;
+        chatContainer.appendChild(botMessage);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+    });
   </script>
 </body>
 </html>
